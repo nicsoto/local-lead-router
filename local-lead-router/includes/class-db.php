@@ -236,6 +236,59 @@ class LLR_DB {
 	}
 
 	/**
+	 * Get leads for a privacy export request.
+	 *
+	 * @param string $email Email address.
+	 * @param int    $page Page number.
+	 * @param int    $per_page Items per page.
+	 * @return array
+	 */
+	public static function get_leads_by_email( $email, $page = 1, $per_page = 50 ) {
+		global $wpdb;
+
+		$email = sanitize_email( $email );
+		$page = max( 1, absint( $page ) );
+		$per_page = min( 100, max( 1, absint( $per_page ) ) );
+		$offset = ( $page - 1 ) * $per_page;
+
+		if ( ! is_email( $email ) ) {
+			return array();
+		}
+
+		return $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT * FROM ' . self::table_name() . ' WHERE email = %s ORDER BY id ASC LIMIT %d OFFSET %d',
+				$email,
+				$per_page,
+				$offset
+			)
+		);
+	}
+
+	/**
+	 * Count leads matching an email address.
+	 *
+	 * @param string $email Email address.
+	 * @return int
+	 */
+	public static function count_leads_by_email( $email ) {
+		global $wpdb;
+
+		$email = sanitize_email( $email );
+
+		if ( ! is_email( $email ) ) {
+			return 0;
+		}
+
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				'SELECT COUNT(*) FROM ' . self::table_name() . ' WHERE email = %s',
+				$email
+			)
+		);
+	}
+
+	/**
 	 * Update lead status.
 	 *
 	 * @param int    $lead_id Lead ID.
@@ -281,6 +334,38 @@ class LLR_DB {
 		);
 
 		return false !== $deleted;
+	}
+
+	/**
+	 * Delete leads matching an email address.
+	 *
+	 * @param string $email Email address.
+	 * @param int    $limit Maximum records to delete.
+	 * @return int
+	 */
+	public static function delete_leads_by_email( $email, $limit = 50 ) {
+		global $wpdb;
+
+		$email = sanitize_email( $email );
+		$limit = min( 100, max( 1, absint( $limit ) ) );
+
+		if ( ! is_email( $email ) ) {
+			return 0;
+		}
+
+		$ids = $wpdb->get_col(
+			$wpdb->prepare(
+				'SELECT id FROM ' . self::table_name() . ' WHERE email = %s ORDER BY id ASC LIMIT %d',
+				$email,
+				$limit
+			)
+		);
+
+		foreach ( $ids as $lead_id ) {
+			self::delete_lead( $lead_id );
+		}
+
+		return count( $ids );
 	}
 
 	/**

@@ -14,6 +14,7 @@ Local Lead Router is a lightweight WordPress plugin MVP for local service busine
 - Honeypot spam protection
 - Basic rate limiting
 - Optional consent checkbox
+- WordPress personal data export/erase integration
 
 ## Target niche
 
@@ -42,3 +43,15 @@ docker compose up -d
 ```
 
 Then visit `http://localhost:8080`, install WordPress, activate the plugin, and add `[lead_router_form]` to a page.
+
+Run local lint checks:
+
+```bash
+bash scripts/lint.sh
+```
+
+Build an installable plugin ZIP:
+
+```bash
+bash scripts/build-zip.sh
+```

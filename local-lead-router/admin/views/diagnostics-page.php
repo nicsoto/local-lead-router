@@ -44,6 +44,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<th scope="row"><?php esc_html_e( 'Fallback recipient', 'local-lead-router' ); ?></th>
 				<td><?php echo esc_html( $settings['default_recipient'] ); ?></td>
 			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Privacy tools', 'local-lead-router' ); ?></th>
+				<td><?php esc_html_e( 'Personal data export and erasure hooks are registered.', 'local-lead-router' ); ?></td>
+			</tr>
 		</tbody>
 	</table>
 

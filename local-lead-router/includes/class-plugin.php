@@ -46,6 +46,9 @@ class LLR_Plugin {
 		$public = new LLR_Public();
 		$public->register_hooks();
 
+		$privacy = new LLR_Privacy();
+		$privacy->register_hooks();
+
 		if ( is_admin() ) {
 			$admin = new LLR_Admin();
 			$admin->register_hooks();

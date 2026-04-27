@@ -84,6 +84,15 @@ class LLR_Admin {
 
 		wp_enqueue_style( 'llr-admin', LLR_URL . 'admin/css/lead-router-admin.css', array(), LLR_VERSION );
 		wp_enqueue_script( 'llr-admin', LLR_URL . 'admin/js/lead-router-admin.js', array(), LLR_VERSION, true );
+		wp_localize_script(
+			'llr-admin',
+			'LLRAdmin',
+			array(
+				'removeRoute'        => __( 'Remove', 'local-lead-router' ),
+				'servicePlaceholder' => __( 'Emergency plumbing', 'local-lead-router' ),
+				'emailPlaceholder'   => __( 'team@example.com', 'local-lead-router' ),
+			)
+		);
 	}
 
 	/**

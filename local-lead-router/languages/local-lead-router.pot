@@ -1,0 +1,490 @@
+# Copyright (C) 2026 Local Lead Router
+# This file is distributed under the same license as the Local Lead Router package.
+# Translators:
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Local Lead Router 0.3.0\n"
+"Report-Msgid-Bugs-To: https://github.com/nicsoto/local-lead-router/issues\n"
+"POT-Creation-Date: 2026-04-27 15:59-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: local-lead-router/includes/class-plugin.php:76
+msgid "Request a quote"
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:78
+msgid "Thanks. Your message was sent successfully."
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:79
+msgid "New lead: {service}"
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:81
+msgid "I agree to be contacted about this request."
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:86
+#: local-lead-router/includes/class-plugin.php:174
+msgid "New project or quote"
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:90
+msgid "Emergency service"
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:94
+msgid "Maintenance or repair"
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:190
+msgid "New"
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:191
+msgid "Contacted"
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:192
+msgid "Won"
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:193
+msgid "Lost"
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:217
+msgid "Security check failed. Please refresh the page and try again."
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:218
+msgid "Please confirm that you agree to be contacted."
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:219
+msgid "Please enter your name."
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:220
+msgid "Please enter a valid email address."
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:221
+msgid "Please choose a service."
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:222
+msgid "Please enter a message."
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:223
+msgid "Please wait a moment before sending another request."
+msgstr ""
+
+#: local-lead-router/includes/class-plugin.php:224
+msgid "We could not save your request. Please try again."
+msgstr ""
+
+#: local-lead-router/includes/class-mailer.php:33
+msgid "Recipient email is invalid."
+msgstr ""
+
+#: local-lead-router/includes/class-mailer.php:56
+msgid "wp_mail() returned false."
+msgstr ""
+
+#: local-lead-router/includes/class-privacy.php:41
+#: local-lead-router/includes/class-privacy.php:56
+msgid "Local Lead Router leads"
+msgstr ""
+
+#: local-lead-router/includes/class-privacy.php:86
+msgid "Local Lead Router Leads"
+msgstr ""
+
+#: local-lead-router/includes/class-privacy.php:142
+#: local-lead-router/admin/views/diagnostics-page.php:89
+msgid "Lead ID"
+msgstr ""
+
+#: local-lead-router/includes/class-privacy.php:146
+msgid "Submitted at"
+msgstr ""
+
+#: local-lead-router/includes/class-privacy.php:150
+#: local-lead-router/admin/views/leads-page.php:80
+#: local-lead-router/admin/views/diagnostics-page.php:92
+msgid "Status"
+msgstr ""
+
+#: local-lead-router/includes/class-privacy.php:154
+#: local-lead-router/public/views/form.php:49
+msgid "Name"
+msgstr ""
+
+#: local-lead-router/includes/class-privacy.php:158
+#: local-lead-router/public/views/form.php:54
+msgid "Email"
+msgstr ""
+
+#: local-lead-router/includes/class-privacy.php:162
+#: local-lead-router/public/views/form.php:59
+msgid "Phone"
+msgstr ""
+
+#: local-lead-router/includes/class-privacy.php:166
+#: local-lead-router/public/views/form.php:64
+#: local-lead-router/admin/views/leads-page.php:77
+msgid "Service"
+msgstr ""
+
+#: local-lead-router/includes/class-privacy.php:170
+#: local-lead-router/public/views/form.php:74
+#: local-lead-router/admin/views/leads-page.php:78
+msgid "Message"
+msgstr ""
+
+#: local-lead-router/includes/class-privacy.php:174
+msgid "Source URL"
+msgstr ""
+
+#: local-lead-router/includes/class-privacy.php:178
+msgid "Referrer"
+msgstr ""
+
+#: local-lead-router/includes/class-privacy.php:182
+msgid "UTM Source"
+msgstr ""
+
+#: local-lead-router/includes/class-privacy.php:186
+msgid "UTM Medium"
+msgstr ""
+
+#: local-lead-router/includes/class-privacy.php:190
+msgid "UTM Campaign"
+msgstr ""
+
+#: local-lead-router/includes/class-public.php:59
+msgid "Please check the form fields and try again."
+msgstr ""
+
+#: local-lead-router/includes/class-admin.php:37
+msgid "Local Lead Router"
+msgstr ""
+
+#: local-lead-router/includes/class-admin.php:38
+msgid "Lead Router"
+msgstr ""
+
+#: local-lead-router/includes/class-admin.php:48
+#: local-lead-router/includes/class-admin.php:49
+#: local-lead-router/admin/views/leads-page.php:17
+msgid "Lead Inbox"
+msgstr ""
+
+#: local-lead-router/includes/class-admin.php:57
+#: local-lead-router/includes/class-admin.php:58
+msgid "Settings"
+msgstr ""
+
+#: local-lead-router/includes/class-admin.php:66
+#: local-lead-router/includes/class-admin.php:67
+msgid "Diagnostics"
+msgstr ""
+
+#: local-lead-router/includes/class-admin.php:91
+#: local-lead-router/admin/views/settings-page.php:125
+msgid "Remove"
+msgstr ""
+
+#: local-lead-router/includes/class-admin.php:92
+#: local-lead-router/admin/views/settings-page.php:119
+msgid "Emergency plumbing"
+msgstr ""
+
+#: local-lead-router/includes/class-admin.php:93
+#: local-lead-router/admin/views/settings-page.php:122
+msgid "team@example.com"
+msgstr ""
+
+#: local-lead-router/includes/class-admin.php:180
+msgid "You do not have permission to edit these settings."
+msgstr ""
+
+#: local-lead-router/includes/class-admin.php:199
+#: local-lead-router/includes/class-admin.php:222
+msgid "You do not have permission to manage leads."
+msgstr ""
+
+#: local-lead-router/includes/class-admin.php:243
+msgid "You do not have permission to export leads."
+msgstr ""
+
+#: local-lead-router/public/views/form.php:44
+msgid "Company"
+msgstr ""
+
+#: local-lead-router/public/views/form.php:66
+msgid "Select an option"
+msgstr ""
+
+#: local-lead-router/public/views/form.php:87
+msgid "Send request"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:16
+msgid "Local Lead Router Settings"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:20
+msgid "Settings saved."
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:25
+msgid "Use this shortcode on any page or post:"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:37
+msgid "Form title"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:45
+#: local-lead-router/admin/views/diagnostics-page.php:44
+msgid "Fallback recipient"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:49
+msgid "Used when no route matches or a route email is invalid."
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:54
+msgid "Success message"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:62
+msgid "Email subject"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:66
+msgid "Available tokens: {name}, {email}, {phone}, {service}."
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:70
+msgid "Consent checkbox"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:74
+msgid "Show and require consent checkbox"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:82
+msgid "Rate limit"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:86
+msgid ""
+"minutes between accepted submissions from the same visitor. Use 0 to disable."
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:90
+msgid "Uninstall behavior"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:94
+msgid "Delete leads, email logs, and settings when the plugin is uninstalled."
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:101
+msgid "Routing rules"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:102
+msgid ""
+"Each service appears as an option in the public form. Leads are sent to the "
+"matching email address."
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:107
+msgid "Service option"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:108
+msgid "Recipient email"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:109
+msgid "Actions"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:133
+msgid "Add route"
+msgstr ""
+
+#: local-lead-router/admin/views/settings-page.php:136
+msgid "Save settings"
+msgstr ""
+
+#: local-lead-router/admin/views/leads-page.php:21
+msgid "Lead deleted."
+msgstr ""
+
+#: local-lead-router/admin/views/leads-page.php:28
+msgid "All"
+msgstr ""
+
+#: local-lead-router/admin/views/leads-page.php:48
+#: local-lead-router/admin/views/leads-page.php:50
+msgid "Search leads"
+msgstr ""
+
+#: local-lead-router/admin/views/leads-page.php:70
+msgid "Export CSV"
+msgstr ""
+
+#: local-lead-router/admin/views/leads-page.php:76
+msgid "Lead"
+msgstr ""
+
+#: local-lead-router/admin/views/leads-page.php:79
+msgid "Source"
+msgstr ""
+
+#: local-lead-router/admin/views/leads-page.php:81
+#: local-lead-router/admin/views/diagnostics-page.php:88
+msgid "Date"
+msgstr ""
+
+#: local-lead-router/admin/views/leads-page.php:87
+msgid "No leads found yet."
+msgstr ""
+
+#: local-lead-router/admin/views/leads-page.php:101
+msgid "Delete this lead?"
+msgstr ""
+
+#: local-lead-router/admin/views/leads-page.php:102
+msgid "Delete"
+msgstr ""
+
+#: local-lead-router/admin/views/leads-page.php:120
+msgid "Open page"
+msgstr ""
+
+#: local-lead-router/admin/views/leads-page.php:139
+msgid "Update"
+msgstr ""
+
+#. translators: %s: number of leads.
+#: local-lead-router/admin/views/leads-page.php:155
+#, php-format
+msgid "%s items"
+msgstr ""
+
+#: local-lead-router/admin/views/leads-page.php:168
+msgid "&laquo;"
+msgstr ""
+
+#: local-lead-router/admin/views/leads-page.php:169
+msgid "&raquo;"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:14
+msgid "Local Lead Router Diagnostics"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:16
+msgid "System"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:20
+msgid "Plugin version"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:24
+msgid "Stored DB version"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:25
+msgid "Not set"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:28
+msgid "WordPress version"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:32
+msgid "PHP version"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:36
+msgid "Leads table"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:37
+#: local-lead-router/admin/views/diagnostics-page.php:41
+msgid "OK"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:37
+#: local-lead-router/admin/views/diagnostics-page.php:41
+msgid "Missing"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:40
+msgid "Email logs table"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:48
+msgid "Privacy tools"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:49
+msgid "Personal data export and erasure hooks are registered."
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:54
+msgid "Lead Summary"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:58
+msgid "Total leads"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:70
+msgid "Email Delivery"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:74
+msgid "Sent"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:78
+msgid "Failed"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:84
+msgid "Recent Email Logs"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:90
+msgid "Recipient"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:91
+msgid "Subject"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:93
+msgid "Error"
+msgstr ""
+
+#: local-lead-router/admin/views/diagnostics-page.php:99
+msgid "No email logs yet."
+msgstr ""
