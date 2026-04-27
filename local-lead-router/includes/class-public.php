@@ -55,6 +55,9 @@ class LLR_Public {
 		$title = '' !== $atts['title'] ? sanitize_text_field( $atts['title'] ) : $settings['form_title'];
 		$status = isset( $_GET['llr_status'] ) ? sanitize_key( wp_unslash( $_GET['llr_status'] ) ) : '';
 		$error = isset( $_GET['llr_error'] ) ? sanitize_key( wp_unslash( $_GET['llr_error'] ) ) : '';
+		$error_messages = LLR_Plugin::form_error_messages();
+		$error_message = isset( $error_messages[ $error ] ) ? $error_messages[ $error ] : __( 'Please check the form fields and try again.', 'local-lead-router' );
+		$posted = $this->get_stored_form_data();
 
 		ob_start();
 		include LLR_DIR . 'public/views/form.php';
@@ -71,8 +74,8 @@ class LLR_Public {
 			return;
 		}
 
-		$redirect = wp_get_referer() ? wp_get_referer() : home_url( '/' );
-		$redirect = remove_query_arg( array( 'llr_status', 'llr_error' ), $redirect );
+		$redirect = $this->redirect_url();
+		$redirect = remove_query_arg( array( 'llr_status', 'llr_error', 'llr_token' ), $redirect );
 
 		if ( empty( $_POST['llr_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['llr_nonce'] ) ), 'llr_submit_lead' ) ) {
 			wp_safe_redirect( add_query_arg( 'llr_error', 'security', $redirect ) );
@@ -87,7 +90,8 @@ class LLR_Public {
 		$settings = LLR_Plugin::settings();
 
 		if ( ! empty( $settings['show_consent'] ) && empty( $_POST['llr_consent'] ) ) {
-			wp_safe_redirect( add_query_arg( 'llr_error', 'consent', $redirect ) );
+			$token = $this->store_form_data( $this->sanitize_submission() );
+			wp_safe_redirect( add_query_arg( array( 'llr_error' => 'consent', 'llr_token' => $token ), $redirect ) );
 			exit;
 		}
 
@@ -95,7 +99,14 @@ class LLR_Public {
 		$errors = $this->validate_submission( $lead );
 
 		if ( ! empty( $errors ) ) {
-			wp_safe_redirect( add_query_arg( 'llr_error', reset( $errors ), $redirect ) );
+			$token = $this->store_form_data( $lead );
+			wp_safe_redirect( add_query_arg( array( 'llr_error' => reset( $errors ), 'llr_token' => $token ), $redirect ) );
+			exit;
+		}
+
+		if ( $this->is_rate_limited( $lead['ip_hash'] ) ) {
+			$token = $this->store_form_data( $lead );
+			wp_safe_redirect( add_query_arg( array( 'llr_error' => 'rate_limited', 'llr_token' => $token ), $redirect ) );
 			exit;
 		}
 
@@ -107,7 +118,8 @@ class LLR_Public {
 			exit;
 		}
 
-		LLR_Mailer::send_lead_notification( $lead );
+		$this->mark_rate_limited( $lead['ip_hash'] );
+		LLR_Mailer::send_lead_notification( $lead, $lead_id );
 
 		wp_safe_redirect( add_query_arg( 'llr_status', 'success', $redirect ) );
 		exit;
@@ -140,6 +152,33 @@ class LLR_Public {
 	}
 
 	/**
+	 * Resolve a safe redirect URL for form feedback.
+	 *
+	 * @return string
+	 */
+	private function redirect_url() {
+		$candidates = array();
+
+		if ( ! empty( $_POST['llr_source_url'] ) ) {
+			$candidates[] = esc_url_raw( wp_unslash( $_POST['llr_source_url'] ) );
+		}
+
+		if ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
+			$candidates[] = esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) );
+		}
+
+		foreach ( $candidates as $candidate ) {
+			$validated = wp_validate_redirect( $candidate, '' );
+
+			if ( '' !== $validated ) {
+				return $validated;
+			}
+		}
+
+		return home_url( '/' );
+	}
+
+	/**
 	 * Validate required fields.
 	 *
 	 * @param array $lead Lead data.
@@ -165,5 +204,87 @@ class LLR_Public {
 		}
 
 		return $errors;
+	}
+
+	/**
+	 * Store submitted fields briefly so the form can be repopulated after an error.
+	 *
+	 * @param array $lead Sanitised lead data.
+	 * @return string
+	 */
+	private function store_form_data( $lead ) {
+		$token = sanitize_key( wp_generate_password( 20, false, false ) );
+		$data = array(
+			'name'    => isset( $lead['name'] ) ? $lead['name'] : '',
+			'email'   => isset( $lead['email'] ) ? $lead['email'] : '',
+			'phone'   => isset( $lead['phone'] ) ? $lead['phone'] : '',
+			'service' => isset( $lead['service'] ) ? $lead['service'] : '',
+			'message' => isset( $lead['message'] ) ? $lead['message'] : '',
+			'consent' => empty( $_POST['llr_consent'] ) ? 0 : 1,
+		);
+
+		set_transient( 'llr_form_' . $token, $data, 10 * MINUTE_IN_SECONDS );
+
+		return $token;
+	}
+
+	/**
+	 * Retrieve stored form data from a redirect token.
+	 *
+	 * @return array
+	 */
+	private function get_stored_form_data() {
+		$defaults = array(
+			'name'    => '',
+			'email'   => '',
+			'phone'   => '',
+			'service' => '',
+			'message' => '',
+			'consent' => 0,
+		);
+
+		if ( empty( $_GET['llr_token'] ) ) {
+			return $defaults;
+		}
+
+		$token = sanitize_key( wp_unslash( $_GET['llr_token'] ) );
+		$data = get_transient( 'llr_form_' . $token );
+		delete_transient( 'llr_form_' . $token );
+
+		return is_array( $data ) ? wp_parse_args( $data, $defaults ) : $defaults;
+	}
+
+	/**
+	 * Check whether the current visitor has posted too recently.
+	 *
+	 * @param string $ip_hash Visitor IP hash.
+	 * @return bool
+	 */
+	private function is_rate_limited( $ip_hash ) {
+		$settings = LLR_Plugin::settings();
+		$minutes = isset( $settings['rate_limit_minutes'] ) ? absint( $settings['rate_limit_minutes'] ) : 0;
+
+		if ( 0 === $minutes || '' === $ip_hash ) {
+			return false;
+		}
+
+		return (bool) get_transient( 'llr_rate_' . substr( $ip_hash, 0, 32 ) );
+	}
+
+	/**
+	 * Mark the current visitor as recently submitted.
+	 *
+	 * @param string $ip_hash Visitor IP hash.
+	 * @return void
+	 */
+	private function mark_rate_limited( $ip_hash ) {
+		$settings = LLR_Plugin::settings();
+		$minutes = isset( $settings['rate_limit_minutes'] ) ? absint( $settings['rate_limit_minutes'] ) : 0;
+
+		if ( 0 === $minutes || '' === $ip_hash ) {
+			return;
+		}
+
+		set_transient( 'llr_rate_' . substr( $ip_hash, 0, 32 ), 1, $minutes * MINUTE_IN_SECONDS );
 	}
 }

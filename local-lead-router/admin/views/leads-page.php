@@ -51,6 +51,25 @@ $base_url = admin_url( 'admin.php?page=llr-leads' );
 		</p>
 	</form>
 
+	<p>
+		<?php
+		$export_args = array(
+			'action' => 'llr_export_leads',
+		);
+
+		if ( '' !== $current_status ) {
+			$export_args['status'] = $current_status;
+		}
+
+		if ( '' !== $search ) {
+			$export_args['s'] = $search;
+		}
+
+		$export_url = wp_nonce_url( add_query_arg( $export_args, admin_url( 'admin-post.php' ) ), 'llr_export_leads' );
+		?>
+		<a class="button button-secondary" href="<?php echo esc_url( $export_url ); ?>"><?php esc_html_e( 'Export CSV', 'local-lead-router' ); ?></a>
+	</p>
+
 	<table class="widefat fixed striped">
 		<thead>
 			<tr>

@@ -25,6 +25,17 @@ class LLR_DB {
 	}
 
 	/**
+	 * Get the email logs table name.
+	 *
+	 * @return string
+	 */
+	public static function email_logs_table_name() {
+		global $wpdb;
+
+		return $wpdb->prefix . 'llr_email_logs';
+	}
+
+	/**
 	 * Insert a lead.
 	 *
 	 * @param array $lead Lead data.
@@ -137,6 +148,50 @@ class LLR_DB {
 	}
 
 	/**
+	 * Get leads for export without pagination.
+	 *
+	 * @param array $args Query arguments.
+	 * @return array
+	 */
+	public static function get_leads_for_export( $args = array() ) {
+		global $wpdb;
+
+		$args = wp_parse_args(
+			$args,
+			array(
+				'status' => '',
+				'search' => '',
+			)
+		);
+
+		$where = array( '1=1' );
+		$params = array();
+
+		if ( '' !== $args['status'] ) {
+			$where[] = 'status = %s';
+			$params[] = LLR_Plugin::normalize_status( $args['status'] );
+		}
+
+		if ( '' !== $args['search'] ) {
+			$like = '%' . $wpdb->esc_like( sanitize_text_field( $args['search'] ) ) . '%';
+			$where[] = '(name LIKE %s OR email LIKE %s OR phone LIKE %s OR service LIKE %s OR message LIKE %s)';
+			$params[] = $like;
+			$params[] = $like;
+			$params[] = $like;
+			$params[] = $like;
+			$params[] = $like;
+		}
+
+		$sql = 'SELECT * FROM ' . self::table_name() . ' WHERE ' . implode( ' AND ', $where ) . ' ORDER BY created_at DESC';
+
+		if ( empty( $params ) ) {
+			return $wpdb->get_results( $sql );
+		}
+
+		return $wpdb->get_results( $wpdb->prepare( $sql, $params ) );
+	}
+
+	/**
 	 * Count leads matching filters.
 	 *
 	 * @param array $args Query arguments.
@@ -213,6 +268,12 @@ class LLR_DB {
 	public static function delete_lead( $lead_id ) {
 		global $wpdb;
 
+		$wpdb->delete(
+			self::email_logs_table_name(),
+			array( 'lead_id' => absint( $lead_id ) ),
+			array( '%d' )
+		);
+
 		$deleted = $wpdb->delete(
 			self::table_name(),
 			array( 'id' => absint( $lead_id ) ),
@@ -239,5 +300,95 @@ class LLR_DB {
 		}
 
 		return $counts;
+	}
+
+	/**
+	 * Insert an email delivery log.
+	 *
+	 * @param array $log Log data.
+	 * @return int|false
+	 */
+	public static function insert_email_log( $log ) {
+		global $wpdb;
+
+		$data = wp_parse_args(
+			$log,
+			array(
+				'lead_id'         => 0,
+				'created_at'      => current_time( 'mysql' ),
+				'recipient_email' => '',
+				'subject'         => '',
+				'status'          => 'unknown',
+				'error_message'   => '',
+			)
+		);
+
+		$inserted = $wpdb->insert(
+			self::email_logs_table_name(),
+			$data,
+			array( '%d', '%s', '%s', '%s', '%s', '%s' )
+		);
+
+		if ( false === $inserted ) {
+			return false;
+		}
+
+		return (int) $wpdb->insert_id;
+	}
+
+	/**
+	 * Get recent email logs.
+	 *
+	 * @param int $limit Number of logs to fetch.
+	 * @return array
+	 */
+	public static function get_email_logs( $limit = 20 ) {
+		global $wpdb;
+
+		$limit = min( 100, max( 1, absint( $limit ) ) );
+
+		return $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT * FROM ' . self::email_logs_table_name() . ' ORDER BY created_at DESC LIMIT %d',
+				$limit
+			)
+		);
+	}
+
+	/**
+	 * Count email logs by status.
+	 *
+	 * @return array
+	 */
+	public static function email_log_counts() {
+		global $wpdb;
+
+		$rows = $wpdb->get_results( 'SELECT status, COUNT(*) AS total FROM ' . self::email_logs_table_name() . ' GROUP BY status' );
+		$counts = array(
+			'sent'   => 0,
+			'failed' => 0,
+		);
+
+		foreach ( $rows as $row ) {
+			$status = sanitize_key( $row->status );
+
+			if ( isset( $counts[ $status ] ) ) {
+				$counts[ $status ] = (int) $row->total;
+			}
+		}
+
+		return $counts;
+	}
+
+	/**
+	 * Check whether a custom table exists.
+	 *
+	 * @param string $table_name Table name.
+	 * @return bool
+	 */
+	public static function table_exists( $table_name ) {
+		global $wpdb;
+
+		return $table_name === $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) );
 	}
 }

@@ -8,8 +8,11 @@ Local Lead Router is a lightweight WordPress plugin MVP for local service busine
 - Service-based email routing
 - Lead storage in a custom WordPress table
 - Lead inbox with simple statuses
+- CSV export from the lead inbox
+- Email delivery logs and diagnostics
 - UTM source, medium, and campaign capture
 - Honeypot spam protection
+- Basic rate limiting
 - Optional consent checkbox
 
 ## Target niche
@@ -29,3 +32,13 @@ This niche is intentionally simpler than a full CRM and easier to validate than 
 ## Notes
 
 Email delivery depends on `wp_mail()` and the hosting provider. For production sites, pair this with a reliable SMTP plugin.
+
+## Development
+
+This repository includes a Docker Compose setup for local testing:
+
+```bash
+docker compose up -d
+```
+
+Then visit `http://localhost:8080`, install WordPress, activate the plugin, and add `[lead_router_form]` to a page.

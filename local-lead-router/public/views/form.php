@@ -23,7 +23,7 @@ $utm_campaign = isset( $_GET['utm_campaign'] ) ? sanitize_text_field( wp_unslash
 		</div>
 	<?php elseif ( '' !== $error ) : ?>
 		<div class="llr-notice llr-notice-error" role="alert">
-			<?php esc_html_e( 'Please check the form fields and try again.', 'local-lead-router' ); ?>
+			<?php echo esc_html( $error_message ); ?>
 		</div>
 	<?php endif; ?>
 
@@ -47,17 +47,17 @@ $utm_campaign = isset( $_GET['utm_campaign'] ) ? sanitize_text_field( wp_unslash
 
 		<div class="llr-field">
 			<label for="llr_name"><?php esc_html_e( 'Name', 'local-lead-router' ); ?> <span aria-hidden="true">*</span></label>
-			<input id="llr_name" type="text" name="llr_name" required autocomplete="name">
+			<input id="llr_name" type="text" name="llr_name" value="<?php echo esc_attr( $posted['name'] ); ?>" required autocomplete="name">
 		</div>
 
 		<div class="llr-field">
 			<label for="llr_email"><?php esc_html_e( 'Email', 'local-lead-router' ); ?> <span aria-hidden="true">*</span></label>
-			<input id="llr_email" type="email" name="llr_email" required autocomplete="email">
+			<input id="llr_email" type="email" name="llr_email" value="<?php echo esc_attr( $posted['email'] ); ?>" required autocomplete="email">
 		</div>
 
 		<div class="llr-field">
 			<label for="llr_phone"><?php esc_html_e( 'Phone', 'local-lead-router' ); ?></label>
-			<input id="llr_phone" type="tel" name="llr_phone" autocomplete="tel">
+			<input id="llr_phone" type="tel" name="llr_phone" value="<?php echo esc_attr( $posted['phone'] ); ?>" autocomplete="tel">
 		</div>
 
 		<div class="llr-field">
@@ -65,20 +65,20 @@ $utm_campaign = isset( $_GET['utm_campaign'] ) ? sanitize_text_field( wp_unslash
 			<select id="llr_service" name="llr_service" required>
 				<option value=""><?php esc_html_e( 'Select an option', 'local-lead-router' ); ?></option>
 				<?php foreach ( $routes as $route ) : ?>
-					<option value="<?php echo esc_attr( $route['label'] ); ?>"><?php echo esc_html( $route['label'] ); ?></option>
+					<option value="<?php echo esc_attr( $route['label'] ); ?>" <?php selected( $posted['service'], $route['label'] ); ?>><?php echo esc_html( $route['label'] ); ?></option>
 				<?php endforeach; ?>
 			</select>
 		</div>
 
 		<div class="llr-field">
 			<label for="llr_message"><?php esc_html_e( 'Message', 'local-lead-router' ); ?> <span aria-hidden="true">*</span></label>
-			<textarea id="llr_message" name="llr_message" rows="5" required></textarea>
+			<textarea id="llr_message" name="llr_message" rows="5" required><?php echo esc_textarea( $posted['message'] ); ?></textarea>
 		</div>
 
 		<?php if ( ! empty( $settings['show_consent'] ) ) : ?>
 			<div class="llr-field llr-consent">
 				<label>
-					<input type="checkbox" name="llr_consent" value="1" required>
+					<input type="checkbox" name="llr_consent" value="1" <?php checked( ! empty( $posted['consent'] ) ); ?> required>
 					<?php echo esc_html( $settings['consent_text'] ); ?>
 				</label>
 			</div>

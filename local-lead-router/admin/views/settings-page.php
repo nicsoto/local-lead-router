@@ -77,36 +77,61 @@ $notice = isset( $_GET['llr_notice'] ) ? sanitize_key( wp_unslash( $_GET['llr_no
 						<input class="large-text" type="text" name="consent_text" value="<?php echo esc_attr( $settings['consent_text'] ); ?>">
 					</td>
 				</tr>
+				<tr>
+					<th scope="row">
+						<label for="llr_rate_limit_minutes"><?php esc_html_e( 'Rate limit', 'local-lead-router' ); ?></label>
+					</th>
+					<td>
+						<input id="llr_rate_limit_minutes" class="small-text" type="number" min="0" max="60" name="rate_limit_minutes" value="<?php echo esc_attr( $settings['rate_limit_minutes'] ); ?>">
+						<?php esc_html_e( 'minutes between accepted submissions from the same visitor. Use 0 to disable.', 'local-lead-router' ); ?>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Uninstall behavior', 'local-lead-router' ); ?></th>
+					<td>
+						<label>
+							<input type="checkbox" name="delete_data_on_uninstall" value="1" <?php checked( ! empty( $settings['delete_data_on_uninstall'] ) ); ?>>
+							<?php esc_html_e( 'Delete leads, email logs, and settings when the plugin is uninstalled.', 'local-lead-router' ); ?>
+						</label>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 
 		<h2><?php esc_html_e( 'Routing rules', 'local-lead-router' ); ?></h2>
 		<p><?php esc_html_e( 'Each service appears as an option in the public form. Leads are sent to the matching email address.', 'local-lead-router' ); ?></p>
 
-		<table class="widefat striped" style="max-width: 900px;">
+		<table class="widefat striped llr-routes-table" style="max-width: 900px;">
 			<thead>
 				<tr>
 					<th><?php esc_html_e( 'Service option', 'local-lead-router' ); ?></th>
 					<th><?php esc_html_e( 'Recipient email', 'local-lead-router' ); ?></th>
+					<th class="llr-route-actions"><?php esc_html_e( 'Actions', 'local-lead-router' ); ?></th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody data-llr-routes>
 				<?php
 				$routes = $settings['routes'];
-				for ( $index = 0; $index < 8; $index++ ) :
-					$route = isset( $routes[ $index ] ) ? $routes[ $index ] : array( 'label' => '', 'email' => '' );
+				foreach ( $routes as $route ) :
 					?>
-					<tr>
+					<tr data-llr-route-row>
 						<td>
 							<input class="regular-text" type="text" name="route_label[]" value="<?php echo esc_attr( $route['label'] ); ?>" placeholder="<?php esc_attr_e( 'Emergency plumbing', 'local-lead-router' ); ?>">
 						</td>
 						<td>
 							<input class="regular-text" type="email" name="route_email[]" value="<?php echo esc_attr( $route['email'] ); ?>" placeholder="<?php esc_attr_e( 'team@example.com', 'local-lead-router' ); ?>">
 						</td>
+						<td class="llr-route-actions">
+							<button type="button" class="button" data-llr-remove-route><?php esc_html_e( 'Remove', 'local-lead-router' ); ?></button>
+						</td>
 					</tr>
-				<?php endfor; ?>
+				<?php endforeach; ?>
 			</tbody>
 		</table>
+
+		<p>
+			<button type="button" class="button" data-llr-add-route><?php esc_html_e( 'Add route', 'local-lead-router' ); ?></button>
+		</p>
 
 		<?php submit_button( __( 'Save settings', 'local-lead-router' ) ); ?>
 	</form>

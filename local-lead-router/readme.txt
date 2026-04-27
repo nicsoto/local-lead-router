@@ -4,7 +4,7 @@ Tags: leads, lead routing, contact form, local business, crm
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,8 +20,12 @@ The MVP includes:
 * Service-based email routing
 * Lead storage inside WordPress
 * A lead inbox with status tracking
+* CSV export
+* Email delivery logs
+* Diagnostics screen
 * UTM source, medium, and campaign capture
 * Honeypot spam protection
+* Basic rate limiting
 * Consent checkbox option
 
 No external service is required.
@@ -49,6 +53,13 @@ No. Emails are sent through WordPress using `wp_mail()`.
 `wp_mail()` depends on the hosting email configuration. If delivery is unreliable, use a trusted SMTP plugin.
 
 == Changelog ==
+
+= 0.2.0 =
+* Added CSV export.
+* Added email delivery logs.
+* Added diagnostics screen.
+* Added rate limiting and improved form error handling.
+* Added dynamic route rows in settings.
 
 = 0.1.0 =
 * Initial MVP release.

@@ -29,6 +29,17 @@ class LLR_Activator {
 	}
 
 	/**
+	 * Run database upgrades when plugin files have changed.
+	 *
+	 * @return void
+	 */
+	public static function maybe_upgrade() {
+		if ( get_option( 'llr_db_version' ) !== LLR_VERSION ) {
+			self::activate();
+		}
+	}
+
+	/**
 	 * Create or update custom tables.
 	 *
 	 * @return void
@@ -37,6 +48,7 @@ class LLR_Activator {
 		global $wpdb;
 
 		$table_name = LLR_DB::table_name();
+		$email_logs_table = LLR_DB::email_logs_table_name();
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE {$table_name} (
@@ -64,7 +76,22 @@ class LLR_Activator {
 			KEY created_at (created_at)
 		) {$charset_collate};";
 
+		$email_logs_sql = "CREATE TABLE {$email_logs_table} (
+			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			lead_id bigint(20) unsigned NOT NULL DEFAULT 0,
+			created_at datetime NOT NULL,
+			recipient_email varchar(190) NOT NULL DEFAULT '',
+			subject varchar(255) NOT NULL DEFAULT '',
+			status varchar(20) NOT NULL DEFAULT '',
+			error_message text NULL,
+			PRIMARY KEY  (id),
+			KEY lead_id (lead_id),
+			KEY status (status),
+			KEY created_at (created_at)
+		) {$charset_collate};";
+
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
+		dbDelta( $email_logs_sql );
 	}
 }

@@ -1,0 +1,15 @@
+.llr-routes-table td {
+	vertical-align: middle;
+}
+
+.llr-route-actions {
+	width: 120px;
+}
+
+.llr-diagnostics-table {
+	max-width: 760px;
+}
+
+.llr-diagnostics-table th {
+	width: 220px;
+}

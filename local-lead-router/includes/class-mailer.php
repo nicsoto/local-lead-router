@@ -19,11 +19,21 @@ class LLR_Mailer {
 	 * @param array $lead Lead data.
 	 * @return bool
 	 */
-	public static function send_lead_notification( $lead ) {
+	public static function send_lead_notification( $lead, $lead_id = 0 ) {
 		$settings = LLR_Plugin::settings();
 		$to = isset( $lead['recipient_email'] ) ? sanitize_email( $lead['recipient_email'] ) : $settings['default_recipient'];
 
 		if ( ! is_email( $to ) ) {
+			LLR_DB::insert_email_log(
+				array(
+					'lead_id'         => absint( $lead_id ),
+					'recipient_email' => $to,
+					'subject'         => '',
+					'status'          => 'failed',
+					'error_message'   => __( 'Recipient email is invalid.', 'local-lead-router' ),
+				)
+			);
+
 			return false;
 		}
 
@@ -35,7 +45,19 @@ class LLR_Mailer {
 			$headers[] = 'Reply-To: ' . sanitize_text_field( $lead['name'] ) . ' <' . sanitize_email( $lead['email'] ) . '>';
 		}
 
-		return wp_mail( $to, $subject, $body, $headers );
+		$sent = wp_mail( $to, $subject, $body, $headers );
+
+		LLR_DB::insert_email_log(
+			array(
+				'lead_id'         => absint( $lead_id ),
+				'recipient_email' => $to,
+				'subject'         => $subject,
+				'status'          => $sent ? 'sent' : 'failed',
+				'error_message'   => $sent ? '' : __( 'wp_mail() returned false.', 'local-lead-router' ),
+			)
+		);
+
+		return $sent;
 	}
 
 	/**

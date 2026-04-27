@@ -41,6 +41,8 @@ class LLR_Plugin {
 	public function run() {
 		add_action( 'init', array( $this, 'load_textdomain' ) );
 
+		LLR_Activator::maybe_upgrade();
+
 		$public = new LLR_Public();
 		$public->register_hooks();
 
@@ -74,6 +76,8 @@ class LLR_Plugin {
 			'email_subject'     => __( 'New lead: {service}', 'local-lead-router' ),
 			'show_consent'      => 1,
 			'consent_text'      => __( 'I agree to be contacted about this request.', 'local-lead-router' ),
+			'rate_limit_minutes' => 2,
+			'delete_data_on_uninstall' => 0,
 			'routes'            => array(
 				array(
 					'label' => __( 'New project or quote', 'local-lead-router' ),
@@ -127,6 +131,8 @@ class LLR_Plugin {
 			'email_subject'     => isset( $raw['email_subject'] ) ? sanitize_text_field( wp_unslash( $raw['email_subject'] ) ) : $defaults['email_subject'],
 			'show_consent'      => empty( $raw['show_consent'] ) ? 0 : 1,
 			'consent_text'      => isset( $raw['consent_text'] ) ? sanitize_text_field( wp_unslash( $raw['consent_text'] ) ) : $defaults['consent_text'],
+			'rate_limit_minutes' => isset( $raw['rate_limit_minutes'] ) ? min( 60, max( 0, absint( $raw['rate_limit_minutes'] ) ) ) : $defaults['rate_limit_minutes'],
+			'delete_data_on_uninstall' => empty( $raw['delete_data_on_uninstall'] ) ? 0 : 1,
 			'routes'            => array(),
 		);
 
@@ -196,5 +202,23 @@ class LLR_Plugin {
 		$allowed = array_keys( self::statuses() );
 
 		return in_array( $status, $allowed, true ) ? $status : 'new';
+	}
+
+	/**
+	 * Public form error messages.
+	 *
+	 * @return array
+	 */
+	public static function form_error_messages() {
+		return array(
+			'security'     => __( 'Security check failed. Please refresh the page and try again.', 'local-lead-router' ),
+			'consent'      => __( 'Please confirm that you agree to be contacted.', 'local-lead-router' ),
+			'name'         => __( 'Please enter your name.', 'local-lead-router' ),
+			'email'        => __( 'Please enter a valid email address.', 'local-lead-router' ),
+			'service'      => __( 'Please choose a service.', 'local-lead-router' ),
+			'message'      => __( 'Please enter a message.', 'local-lead-router' ),
+			'rate_limited' => __( 'Please wait a moment before sending another request.', 'local-lead-router' ),
+			'storage'      => __( 'We could not save your request. Please try again.', 'local-lead-router' ),
+		);
 	}
 }
