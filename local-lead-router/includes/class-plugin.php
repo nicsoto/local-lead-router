@@ -39,9 +39,8 @@ class LLR_Plugin {
 	 * @return void
 	 */
 	public function run() {
-		add_action( 'init', array( $this, 'load_textdomain' ) );
-
-		LLR_Activator::maybe_upgrade();
+		add_action( 'init', array( $this, 'load_textdomain' ), 1 );
+		add_action( 'init', array( 'LLR_Activator', 'maybe_upgrade' ), 5 );
 
 		$public = new LLR_Public();
 		$public->register_hooks();

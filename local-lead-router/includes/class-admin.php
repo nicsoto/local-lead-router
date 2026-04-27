@@ -304,7 +304,6 @@ class LLR_Admin {
 			);
 		}
 
-		fclose( $output );
 		exit;
 	}
 

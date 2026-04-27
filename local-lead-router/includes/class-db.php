@@ -9,6 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table names and SQL fragments are generated internally; user input is still passed through $wpdb->prepare().
+
 /**
  * Stores and retrieves lead records.
  */

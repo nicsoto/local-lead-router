@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Local Lead Router
- * Plugin URI: https://example.com/local-lead-router
+ * Plugin URI: https://github.com/nicsoto/local-lead-router
  * Description: Capture local service leads, route them to the right inbox, and manage follow-up inside WordPress.
  * Version: 0.4.0
  * Requires at least: 5.8
