@@ -14,6 +14,50 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class LLR_Mailer {
 	/**
+	 * Send a diagnostic email from the admin screen.
+	 *
+	 * @param string $to Recipient email.
+	 * @return bool
+	 */
+	public static function send_test_email( $to ) {
+		$to = sanitize_email( $to );
+
+		if ( ! is_email( $to ) ) {
+			LLR_DB::insert_email_log(
+				array(
+					'lead_id'         => 0,
+					'recipient_email' => $to,
+					'subject'         => '',
+					'status'          => 'failed',
+					'error_message'   => __( 'Test email recipient is invalid.', 'local-lead-router' ),
+				)
+			);
+
+			return false;
+		}
+
+		$subject = __( 'Local Lead Router test email', 'local-lead-router' );
+		$body = sprintf(
+			/* translators: %s: site name. */
+			__( "This is a Local Lead Router delivery test from %s.\n\nIf you received this email, WordPress mail delivery is working for this recipient.", 'local-lead-router' ),
+			wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES )
+		);
+		$sent = wp_mail( $to, $subject, $body, array( 'Content-Type: text/plain; charset=UTF-8' ) );
+
+		LLR_DB::insert_email_log(
+			array(
+				'lead_id'         => 0,
+				'recipient_email' => $to,
+				'subject'         => $subject,
+				'status'          => $sent ? 'sent' : 'failed',
+				'error_message'   => $sent ? '' : __( 'wp_mail() returned false during the test email.', 'local-lead-router' ),
+			)
+		);
+
+		return $sent;
+	}
+
+	/**
 	 * Send admin notification for a lead.
 	 *
 	 * @param array $lead Lead data.

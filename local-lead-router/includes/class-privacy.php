@@ -28,6 +28,29 @@ class LLR_Privacy {
 	public function register_hooks() {
 		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'register_exporter' ) );
 		add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'register_eraser' ) );
+		add_action( 'admin_init', array( $this, 'add_privacy_policy_content' ) );
+	}
+
+	/**
+	 * Add suggested text to the WordPress privacy policy guide.
+	 *
+	 * @return void
+	 */
+	public function add_privacy_policy_content() {
+		if ( ! function_exists( 'wp_add_privacy_policy_content' ) ) {
+			return;
+		}
+
+		$content = wp_kses_post(
+			wpautop(
+				__(
+					'Local Lead Router stores contact form submissions so site administrators can respond to service requests and manage follow-up. Stored data may include name, email address, phone number, selected service, message, source URL, referrer, UTM campaign fields, a hashed IP address, browser user agent, recipient email, lead status, and email delivery logs. This data is kept in this WordPress site database and is not sent to an external service by the plugin. Site administrators can export or erase stored lead data using the WordPress personal data tools.',
+					'local-lead-router'
+				)
+			)
+		);
+
+		wp_add_privacy_policy_content( __( 'Local Lead Router', 'local-lead-router' ), $content );
 	}
 
 	/**

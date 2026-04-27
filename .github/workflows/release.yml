@@ -1,13 +1,15 @@
-name: CI
+name: Release
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
 
 jobs:
-  lint:
+  release:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,21 +26,17 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Lint PHP and JS
+      - name: Lint
         run: bash scripts/lint.sh
 
       - name: Build plugin zip
         run: bash scripts/build-zip.sh
 
-  plugin-check:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Run WordPress Plugin Check
-        uses: wordpress/plugin-check-action@v1
-        with:
-          build-dir: './local-lead-router'
-          ignore-warnings: true
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          gh release create "${GITHUB_REF_NAME}" "dist/local-lead-router-${VERSION}.zip" \
+            --title "Local Lead Router ${VERSION}" \
+            --notes "Release ${GITHUB_REF_NAME}"

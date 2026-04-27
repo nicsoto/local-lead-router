@@ -25,6 +25,7 @@ class LLR_Admin {
 		add_action( 'admin_post_llr_update_lead_status', array( $this, 'update_lead_status' ) );
 		add_action( 'admin_post_llr_delete_lead', array( $this, 'delete_lead' ) );
 		add_action( 'admin_post_llr_export_leads', array( $this, 'export_leads' ) );
+		add_action( 'admin_post_llr_send_test_email', array( $this, 'send_test_email' ) );
 	}
 
 	/**
@@ -120,6 +121,7 @@ class LLR_Admin {
 		}
 
 		$settings = LLR_Plugin::settings();
+		$notice = isset( $_GET['llr_notice'] ) ? sanitize_key( wp_unslash( $_GET['llr_notice'] ) ) : '';
 		$lead_count = LLR_DB::count_leads();
 		$status_counts = LLR_DB::status_counts();
 		$email_log_counts = LLR_DB::email_log_counts();
@@ -303,6 +305,27 @@ class LLR_Admin {
 		}
 
 		fclose( $output );
+		exit;
+	}
+
+	/**
+	 * Send a diagnostic test email.
+	 *
+	 * @return void
+	 */
+	public function send_test_email() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have permission to send test emails.', 'local-lead-router' ) );
+		}
+
+		check_admin_referer( 'llr_send_test_email' );
+
+		$settings = LLR_Plugin::settings();
+		$to = isset( $_POST['test_email'] ) ? sanitize_email( wp_unslash( $_POST['test_email'] ) ) : $settings['default_recipient'];
+		$sent = LLR_Mailer::send_test_email( $to );
+		$notice = $sent ? 'test_email_sent' : 'test_email_failed';
+
+		wp_safe_redirect( add_query_arg( 'llr_notice', $notice, admin_url( 'admin.php?page=llr-diagnostics' ) ) );
 		exit;
 	}
 }

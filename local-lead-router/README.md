@@ -15,6 +15,8 @@ Local Lead Router is a lightweight WordPress plugin MVP for local service busine
 - Basic rate limiting
 - Optional consent checkbox
 - WordPress personal data export/erase integration
+- Suggested WordPress privacy policy content
+- Diagnostic test email from the admin screen
 
 ## Target niche
 

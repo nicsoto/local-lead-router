@@ -13,6 +13,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="wrap">
 	<h1><?php esc_html_e( 'Local Lead Router Diagnostics', 'local-lead-router' ); ?></h1>
 
+	<?php if ( 'test_email_sent' === $notice ) : ?>
+		<div class="notice notice-success is-dismissible">
+			<p><?php esc_html_e( 'Test email sent. Check the recent email logs below for delivery details.', 'local-lead-router' ); ?></p>
+		</div>
+	<?php elseif ( 'test_email_failed' === $notice ) : ?>
+		<div class="notice notice-error is-dismissible">
+			<p><?php esc_html_e( 'Test email failed. Check the recent email logs below for details.', 'local-lead-router' ); ?></p>
+		</div>
+	<?php endif; ?>
+
 	<h2><?php esc_html_e( 'System', 'local-lead-router' ); ?></h2>
 	<table class="widefat striped llr-diagnostics-table">
 		<tbody>
@@ -68,6 +78,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</table>
 
 	<h2><?php esc_html_e( 'Email Delivery', 'local-lead-router' ); ?></h2>
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="llr-test-email-form">
+		<input type="hidden" name="action" value="llr_send_test_email">
+		<?php wp_nonce_field( 'llr_send_test_email' ); ?>
+		<label for="llr_test_email"><?php esc_html_e( 'Send test email to', 'local-lead-router' ); ?></label>
+		<input id="llr_test_email" type="email" class="regular-text" name="test_email" value="<?php echo esc_attr( $settings['default_recipient'] ); ?>">
+		<?php submit_button( __( 'Send test email', 'local-lead-router' ), 'secondary', '', false ); ?>
+	</form>
 	<table class="widefat striped llr-diagnostics-table">
 		<tbody>
 			<tr>

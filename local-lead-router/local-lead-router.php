@@ -3,7 +3,7 @@
  * Plugin Name: Local Lead Router
  * Plugin URI: https://example.com/local-lead-router
  * Description: Capture local service leads, route them to the right inbox, and manage follow-up inside WordPress.
- * Version: 0.3.0
+ * Version: 0.4.0
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * Author: Local Lead Router
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LLR_VERSION', '0.3.0' );
+define( 'LLR_VERSION', '0.4.0' );
 define( 'LLR_FILE', __FILE__ );
 define( 'LLR_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LLR_URL', plugin_dir_url( __FILE__ ) );

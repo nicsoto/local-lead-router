@@ -13,3 +13,11 @@
 .llr-diagnostics-table th {
 	width: 220px;
 }
+
+.llr-test-email-form {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+	margin: 0 0 16px;
+}

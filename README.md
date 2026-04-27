@@ -31,3 +31,12 @@ bash scripts/build-zip.sh
 ```
 
 The generated ZIP is written to `dist/`.
+
+## Release
+
+Push a version tag to build and publish a GitHub release artifact:
+
+```bash
+git tag v0.4.0
+git push origin v0.4.0
+```

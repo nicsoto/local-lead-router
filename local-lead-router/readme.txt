@@ -4,7 +4,7 @@ Tags: leads, lead routing, contact form, local business, crm
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.3.0
+Stable tag: 0.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,6 +28,8 @@ The MVP includes:
 * Basic rate limiting
 * Consent checkbox option
 * WordPress personal data export and erasure support
+* Suggested privacy policy content
+* Diagnostic test email
 
 No external service is required.
 
@@ -54,6 +56,11 @@ No. Emails are sent through WordPress using `wp_mail()`.
 `wp_mail()` depends on the hosting email configuration. If delivery is unreliable, use a trusted SMTP plugin.
 
 == Changelog ==
+
+= 0.4.0 =
+* Added suggested privacy policy content for WordPress privacy settings.
+* Added diagnostic test email action.
+* Added Plugin Check and release workflows.
 
 = 0.3.0 =
 * Added WordPress personal data exporter and eraser integration.
