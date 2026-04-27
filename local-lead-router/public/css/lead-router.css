@@ -1,0 +1,89 @@
+.llr-form-wrap {
+	max-width: 680px;
+}
+
+.llr-form {
+	display: grid;
+	gap: 14px;
+}
+
+.llr-form-title {
+	margin: 0 0 4px;
+}
+
+.llr-field {
+	display: grid;
+	gap: 6px;
+}
+
+.llr-field label {
+	font-weight: 600;
+}
+
+.llr-field input,
+.llr-field select,
+.llr-field textarea {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+	padding: 10px 12px;
+	border: 1px solid #c9d1d9;
+	border-radius: 6px;
+	font: inherit;
+}
+
+.llr-field textarea {
+	resize: vertical;
+}
+
+.llr-honeypot {
+	position: absolute;
+	left: -10000px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.llr-consent label {
+	display: flex;
+	gap: 8px;
+	align-items: flex-start;
+	font-weight: 400;
+}
+
+.llr-consent input {
+	width: auto;
+	margin-top: 0.25em;
+}
+
+.llr-submit {
+	justify-self: start;
+	padding: 10px 16px;
+	border: 0;
+	border-radius: 6px;
+	background: #1d2327;
+	color: #fff;
+	font: inherit;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.llr-submit:hover,
+.llr-submit:focus {
+	background: #2c3338;
+}
+
+.llr-notice {
+	margin: 0 0 16px;
+	padding: 12px 14px;
+	border-left: 4px solid;
+	background: #fff;
+}
+
+.llr-notice-success {
+	border-color: #008a20;
+}
+
+.llr-notice-error {
+	border-color: #d63638;
+}
